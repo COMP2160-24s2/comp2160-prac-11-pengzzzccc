@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
 #region UI Elements
     [SerializeField] private Transform crosshair;
     [SerializeField] private Transform target;
+    [SerializeField] private Canvas canvas;
 #endregion 
 
 #region Singleton
@@ -80,9 +81,14 @@ public class UIManager : MonoBehaviour
     private void MoveCrosshair() 
     {
         Vector2 mousePos = mouseAction.ReadValue<Vector2>();
+        // Debug.Log(mousePos);
 
         // FIXME: Move the crosshair position to the mouse position (in world coordinates)
-        // crosshair.position = ...;
+        Vector2 uiPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, mousePos, Camera.main, out uiPos);
+        Vector3 uiPos3 = new Vector3(uiPos.x, 0, uiPos.y);
+        crosshair.position = uiPos3;
+        // Camera
     }
 
     private void SelectTarget()
